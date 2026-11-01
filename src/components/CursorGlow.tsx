@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /** Lime glow that trails the cursor — desktop only. */
 export default function CursorGlow() {
@@ -6,8 +6,13 @@ export default function CursorGlow() {
   const dotRef = useRef<HTMLDivElement>(null)
   const target = useRef({ x: -400, y: -400 })
   const pos = useRef({ x: -400, y: -400 })
+  // Reduced motion: don't attach the glow at all — render nothing.
+  const [reduced] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
 
   useEffect(() => {
+    if (reduced) return
     if (window.matchMedia('(pointer: coarse)').matches) return
     const onMove = (e: MouseEvent) => {
       target.current = { x: e.clientX, y: e.clientY }
@@ -24,13 +29,22 @@ export default function CursorGlow() {
       }
       raf = requestAnimationFrame(tick)
     }
+    // Pause the loop while the tab is backgrounded.
+    const onVisibility = () => {
+      cancelAnimationFrame(raf)
+      if (!document.hidden) raf = requestAnimationFrame(tick)
+    }
     window.addEventListener('mousemove', onMove, { passive: true })
-    raf = requestAnimationFrame(tick)
+    document.addEventListener('visibilitychange', onVisibility)
+    if (!document.hidden) raf = requestAnimationFrame(tick)
     return () => {
       window.removeEventListener('mousemove', onMove)
+      document.removeEventListener('visibilitychange', onVisibility)
       cancelAnimationFrame(raf)
     }
-  }, [])
+  }, [reduced])
+
+  if (reduced) return null
 
   return (
     <>

@@ -97,6 +97,8 @@ export default function Carousel3D({ onOpen }: Props) {
 
   // Physics loop — writes styles imperatively, no state updates per frame
   useEffect(() => {
+    // Reduced motion: keep the loop for interaction (arrows/drag/wheel) but never auto-advance.
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     let raf = 0
     const tick = () => {
       if (dragging.current) {
@@ -116,7 +118,7 @@ export default function Carousel3D({ onOpen }: Props) {
         target.current = current.current
       } else {
         // pause auto-rotation while the user is hovering, so the front card is clickable
-        const auto = hovered.current ? 0 : 0.22 * direction.current
+        const auto = hovered.current || reduced ? 0 : 0.22 * direction.current
         velocity.current = auto + (velocity.current - auto) * 0.982
         current.current += velocity.current
         target.current = current.current

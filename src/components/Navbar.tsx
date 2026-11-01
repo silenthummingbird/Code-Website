@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowRight } from 'lucide-react'
-import { NAV_LINKS } from '@/lib/data'
+import { COMPANY, NAV_LINKS } from '@/lib/data'
 import { cn } from '@/lib/utils'
 
 function Logo() {
@@ -56,7 +56,7 @@ export default function Navbar() {
                 to={l.to}
                 className={({ isActive }) =>
                   cn(
-                    'rounded-full px-4 py-1.5 text-sm transition-all duration-200',
+                    'rounded-full px-4 py-1.5 text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime focus-visible:ring-offset-2 focus-visible:ring-offset-ink',
                     isActive ? 'bg-lime text-ink font-medium' : 'text-white/75 hover:bg-white/10 hover:text-white',
                   )
                 }
@@ -68,8 +68,8 @@ export default function Navbar() {
 
           <div className="flex items-center gap-2">
             <a
-              href="mailto:hello@codeat.io"
-              className="hidden rounded-full bg-lime px-5 py-2 text-sm font-semibold text-ink transition-all duration-300 hover:brightness-110 active:scale-[0.97] lg:block"
+              href={`mailto:${COMPANY.email}`}
+              className="hidden rounded-full bg-lime px-5 py-2 text-sm font-semibold text-ink transition-all duration-300 hover:brightness-110 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime focus-visible:ring-offset-2 focus-visible:ring-offset-ink lg:block"
             >
               Start a Project
             </a>
@@ -78,7 +78,7 @@ export default function Navbar() {
               onClick={() => setOpen((v) => !v)}
               aria-label="Toggle menu"
               aria-expanded={open}
-              className="relative flex size-10 items-center justify-center rounded-full transition-colors lg:hidden"
+              className="relative flex size-10 items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime focus-visible:ring-offset-2 focus-visible:ring-offset-ink lg:hidden"
               style={{ backgroundColor: open ? '#1a1a1a' : 'rgba(255,255,255,0.06)' }}
             >
               <span className="relative block h-[10px] w-4">
@@ -133,7 +133,7 @@ export default function Navbar() {
                 >
                   <Link
                     to={l.to}
-                    className="group flex items-center gap-3 text-3xl font-light tracking-tight text-white"
+                    className="group flex items-center gap-3 text-3xl font-light tracking-tight text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime focus-visible:ring-offset-2 focus-visible:ring-offset-ink rounded-md"
                   >
                     <span className="font-mono text-xs text-lime opacity-0 transition-opacity group-hover:opacity-100">→</span>
                     {l.label}
@@ -148,8 +148,8 @@ export default function Navbar() {
                 className="mt-6"
               >
                 <a
-                  href="mailto:hello@codeat.io"
-                  className="inline-flex items-center gap-2 rounded-full bg-lime px-7 py-3.5 text-sm font-semibold text-ink"
+                  href={`mailto:${COMPANY.email}`}
+                  className="inline-flex items-center gap-2 rounded-full bg-lime px-7 py-3.5 text-sm font-semibold text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
                 >
                   Start a Project <ArrowRight size={15} />
                 </a>

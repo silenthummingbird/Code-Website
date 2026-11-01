@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
 import FadeUp from '@/components/FadeUp'
+import { imgFallback, IMAGE_FALLBACK } from '@/lib/utils'
 
 // `anchor` pins each label's near edge to the tip of its radial line.
 const ANGLES = [
@@ -70,7 +71,7 @@ export default function RadialDiagram() {
               className="relative shrink-0"
               style={{ width: 250, height: 310 }}
             >
-              <img src={PORTRAIT} alt="Code@ founder portrait" className="size-full rounded-lg object-cover grayscale" />
+              <img src={PORTRAIT} alt="Code@ founder portrait" onError={imgFallback(IMAGE_FALLBACK)} className="size-full rounded-lg object-cover grayscale" />
               {GLITCH_BLOCKS.map(([x, y, w, h], i) => (
                 <motion.span
                   key={i}
