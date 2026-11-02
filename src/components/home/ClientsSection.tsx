@@ -14,10 +14,10 @@ export default function ClientsSection() {
           </p>
         </FadeUp>
 
-        <div className="relative min-w-0 flex-1 overflow-hidden" style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
+        <div className="relative w-full min-w-0 overflow-hidden lg:w-auto lg:flex-1" style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
           <div className="animate-marquee flex w-max items-center gap-14 pr-14">
             {row.map((c, i) => (
-              <span key={`${c}-${i}`} className="flex shrink-0 items-center gap-3 text-xl font-light tracking-tight text-white/40 transition-colors hover:text-white/80 sm:text-2xl">
+              <span key={`${c}-${i}`} className="flex shrink-0 items-center gap-3 text-xl font-light tracking-tight text-white/55 transition-colors hover:text-white/90 sm:text-2xl">
                 <span className="size-1.5 rounded-full bg-lime/60" aria-hidden />
                 {c}
               </span>

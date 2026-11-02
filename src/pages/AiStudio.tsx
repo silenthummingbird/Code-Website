@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion } from 'motion/react'
+import { COMPANY } from '@/lib/data'
+import { imgFallback, IMAGE_FALLBACK } from '@/lib/utils'
 
 const VIDEO_LEFT =
   'https://d8j0ntlcm91z4.cloudfront.net/user_39ca84eAE1ODL9hbR5VhoEj8tBf/hf_20260625_154433_532a85d3-dabf-4265-b8bd-19ac6af31842.mp4'
@@ -164,6 +166,13 @@ export default function AiStudio() {
     const wrap = wrapRef.current
     if (!spacer || !panel || !wrap) return
 
+    // Reduced motion: skip the scroll-scrubbed choreography and leave a clean, static
+    // single-screen hero (panel stays off-screen; hero heading + copy remain visible).
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      spacer.style.height = '100vh'
+      return
+    }
+
     let lastSymbol = 0
     const cards = () => Array.from(wrap.querySelectorAll<HTMLElement>('.bp-card'))
 
@@ -261,9 +270,9 @@ export default function AiStudio() {
         transition={{ duration: 0.6, ease: easeEntry }}
         className="pointer-events-none fixed left-4 top-20 z-20 mix-blend-exclusion lg:left-8 lg:top-24"
       >
-        <p className="text-[clamp(2.6rem,7vw,5.5rem)] font-semibold uppercase leading-[0.95] tracking-[-0.04em] text-white">
+        <h1 className="text-[clamp(2.6rem,7vw,5.5rem)] font-semibold uppercase leading-[0.95] tracking-[-0.04em] text-white">
           AI Studio<span className="font-mono">®</span>
-        </p>
+        </h1>
       </motion.div>
 
       <motion.div
@@ -324,7 +333,7 @@ export default function AiStudio() {
                       willChange: 'transform',
                     }}
                   >
-                    <img src={GALLERY[imgIdx]} alt={`AI generated artwork ${imgIdx + 1}`} loading="lazy" className="size-full object-cover" />
+                    <img src={GALLERY[imgIdx]} alt={`AI generated artwork ${imgIdx + 1}`} loading="lazy" onError={imgFallback(IMAGE_FALLBACK)} className="size-full object-cover" />
                   </div>
                 ),
               ),
@@ -348,7 +357,7 @@ export default function AiStudio() {
       </div>
       <a
         ref={viewRef}
-        href="mailto:hello@codeat.io?subject=AI%20Studio"
+        href={`mailto:${COMPANY.email}?subject=AI%20Studio`}
         className="fixed bottom-16 right-4 z-[14] flex h-[100px] w-[calc(100%-2rem)] items-center justify-center rounded-full bg-ink lg:bottom-8 lg:right-8 lg:h-[174px] lg:w-[330px]"
         style={{ transform: 'scale(0)', transformOrigin: 'right bottom', pointerEvents: 'none' }}
       >

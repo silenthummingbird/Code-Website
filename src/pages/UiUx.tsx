@@ -11,7 +11,7 @@ const FigmaIcon = ({ size = 22 }: { size?: number }) => (
     <path d="M5 12.5A3.5 3.5 0 0 1 8.5 9H12v7H8.5A3.5 3.5 0 0 1 5 12.5z" />
   </svg>
 )
-import { PROJECTS, type Project } from '@/lib/data'
+import { COMPANY, PROJECTS, type Project } from '@/lib/data'
 import ProjectModal, { MacBookFrame } from '@/components/home/ProjectModal'
 import SpotlightBorder from '@/components/SpotlightBorder'
 import KineticText from '@/components/KineticText'
@@ -59,6 +59,8 @@ function ProcessShowcase() {
   const paused = useRef(false)
 
   useEffect(() => {
+    // Reduced motion: don't auto-rotate — the tabs/arrows still work.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const id = setInterval(() => {
       if (!paused.current) setActive((a) => (a + 1) % TABS.length)
     }, 5000)
@@ -158,6 +160,10 @@ function MacBookPortfolio({ onOpen }: { onOpen: (p: Project) => void }) {
                 key={project.title}
                 src={project.screenshot ?? project.preview}
                 alt={`${project.title} in the browser`}
+                onError={(e) => {
+                  const img = e.currentTarget as HTMLImageElement
+                  if (img.src !== project.preview) img.src = project.preview
+                }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -270,7 +276,7 @@ export default function UiUx() {
             Have a product that <em className="font-serif font-[350] text-lime">deserves better</em>?
           </h2>
           <a
-            href="mailto:hello@codeat.io?subject=UI%2FUX%20Design"
+            href={`mailto:${COMPANY.email}?subject=UI%2FUX%20Design`}
             className="group mt-8 inline-flex items-center gap-2 rounded-full bg-lime px-8 py-3.5 text-sm font-semibold text-ink transition-all hover:brightness-110 active:scale-[0.97]"
           >
             Book a Design Sprint

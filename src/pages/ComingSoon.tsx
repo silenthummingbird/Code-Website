@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { COMPANY } from '@/lib/data'
 import LazySpline from '@/components/LazySpline'
 
 const SPLINE_SCENE = 'https://prod.spline.design/Slk6b8kz3LRlKiyk/scene.splinecode'
@@ -50,7 +51,7 @@ export default function ComingSoon({
         </p>
         <div className="animate-fade-up flex flex-wrap gap-3 font-bold opacity-0" style={{ animationDelay: '0.7s' }}>
           <a
-            href="mailto:hello@codeat.io"
+            href={`mailto:${COMPANY.email}`}
             className="pointer-events-auto cursor-pointer rounded-brand-sm bg-lime px-6 py-3 text-sm text-ink transition-all hover:brightness-110 active:scale-[0.97] md:px-8 md:py-4"
           >
             Book a Call

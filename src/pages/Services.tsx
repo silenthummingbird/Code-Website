@@ -21,7 +21,7 @@ export default function Services() {
   return (
     <>
       {/* HERO — full-screen video, centered statement */}
-      <section className="relative h-screen w-full overflow-hidden bg-ink">
+      <section className="relative min-h-[100svh] w-full overflow-hidden bg-ink">
         <video
           className="absolute inset-0 z-0 size-full object-cover opacity-60"
           src={HERO_VIDEO}
@@ -29,6 +29,7 @@ export default function Services() {
           loop
           muted
           playsInline
+          preload="none"
         />
         <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/60 via-transparent to-black" />
 
@@ -54,7 +55,7 @@ export default function Services() {
           </FadeUp>
           <FadeUp delay={1.1}>
             <a
-              href="mailto:hello@codeat.io"
+              href={`mailto:${COMPANY.email}`}
               className="group mt-8 flex items-center gap-2.5 rounded-full bg-lime px-6 py-3 text-sm font-semibold text-ink transition-all duration-300 hover:brightness-110 active:scale-[0.97]"
             >
               Get Consultation
@@ -81,7 +82,7 @@ export default function Services() {
                     <em className="font-serif font-[350]">helping businesses enhance efficiency</em>.
                   </h2>
                   <a
-                    href="mailto:hello@codeat.io"
+                    href={`mailto:${COMPANY.email}`}
                     className="mt-10 inline-flex items-center gap-2 rounded-lg bg-ink px-8 py-3.5 font-mono text-xs font-semibold uppercase tracking-widest text-lime transition-all hover:bg-black/85 active:scale-[0.97]"
                   >
                     Get Consultation
@@ -136,7 +137,7 @@ export default function Services() {
 
           <div className="flex flex-col items-stretch gap-12 lg:flex-row lg:gap-0">
             <FadeUp className="lg:w-[45%]">
-              <video src={ABOUT_VIDEO} autoPlay loop muted playsInline className="w-full rounded-2xl border border-white/10" />
+              <video src={ABOUT_VIDEO} autoPlay loop muted playsInline preload="none" className="w-full rounded-2xl border border-white/10" />
             </FadeUp>
             <div className="hidden w-px bg-white/10 lg:mx-12 lg:block" />
             <div className="flex min-h-[400px] flex-1 flex-col justify-between gap-10">
@@ -182,7 +183,7 @@ export default function Services() {
               <FadeUp key={p.step} delay={i * 0.1} className="group bg-ink p-8 transition-colors hover:bg-card">
                 <p className="font-mono text-[10px] tracking-widest text-lime">{p.step}</p>
                 <h3 className="mt-5 text-lg font-medium text-paper">{p.title}</h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-white/45">{p.desc}</p>
+                <p className="mt-2 text-[13px] leading-relaxed text-white/60">{p.desc}</p>
               </FadeUp>
             ))}
           </div>
