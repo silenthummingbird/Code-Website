@@ -1,6 +1,6 @@
 import { useRef, useState, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { User, StickyNote } from 'lucide-react'
+import { User, StickyNote, Mail } from 'lucide-react'
 
 const InstagramIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -23,6 +23,7 @@ const BehanceIcon = () => (
 )
 import { PROJECTS, TEAM, COMPANY, STATS, type Project } from '@/lib/data'
 import ProjectModal from '@/components/home/ProjectModal'
+import ContactForm from '@/components/ContactForm'
 
 const ANCHORS: { x: number; y: number }[] = [
   { x: 42.75, y: 46.5 },
@@ -70,7 +71,16 @@ function DraggableCard({ project, anchor, onOpen }: { project: Project; anchor: 
   return (
     <div
       {...handlers}
-      className="group absolute z-[2] flex cursor-pointer touch-none select-none flex-col items-center gap-2"
+      role="button"
+      tabIndex={0}
+      aria-label={`Open ${project.title}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onOpen()
+        }
+      }}
+      className="group absolute z-[2] flex cursor-pointer touch-none select-none flex-col items-center gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
       style={{
         left: `calc(${anchor.x}% - 62px)`,
         top: `calc(${anchor.y}% - 64px)`,
@@ -150,10 +160,10 @@ function DockIcon({ label, children, onClick, href }: { label: string; children:
 /** Team & portfolio desk — draggable project cards over a night-sky canvas, with a macOS dock. */
 export default function Team() {
   const [openProject, setOpenProject] = useState<Project | null>(null)
-  const [window_, setWindow] = useState<'about' | 'team' | null>(null)
+  const [window_, setWindow] = useState<'about' | 'team' | 'contact' | null>(null)
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-ink">
+    <div className="relative min-h-[100svh] w-full bg-ink lg:h-screen lg:overflow-hidden">
       {/* Night-sky backdrop */}
       <div
         aria-hidden
@@ -171,7 +181,7 @@ export default function Team() {
         style={{ maskImage: 'linear-gradient(to bottom, transparent 0%, black 40%)', WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 40%)' }}
       />
 
-      <div className="pointer-events-none absolute left-1/2 top-24 z-[3] w-full -translate-x-1/2 px-6 text-center">
+      <div className="relative z-[3] w-full px-6 pt-28 text-center lg:pointer-events-none lg:absolute lg:left-1/2 lg:top-24 lg:-translate-x-1/2 lg:pt-0">
         <p className="section-label mb-3">[ The Desk ]</p>
         <h1 className="text-3xl font-light tracking-tight text-paper sm:text-4xl">
           Our work, <em className="font-serif font-[350] text-lime">scattered</em> like we left it.
@@ -181,17 +191,41 @@ export default function Team() {
         </p>
       </div>
 
-      {PROJECTS.slice(0, 6).map((p, i) => (
-        <DraggableCard key={p.title} project={p} anchor={ANCHORS[i]} onOpen={() => setOpenProject(p)} />
-      ))}
+      {/* Desktop: draggable scattered desk */}
+      <div className="hidden lg:block">
+        {PROJECTS.slice(0, 6).map((p, i) => (
+          <DraggableCard key={p.title} project={p} anchor={ANCHORS[i]} onOpen={() => setOpenProject(p)} />
+        ))}
+      </div>
+
+      {/* Mobile / tablet: tidy tappable grid — the scattered desk can't work on small screens */}
+      <div className="relative z-[3] mx-auto grid max-w-md grid-cols-2 gap-4 px-6 pb-36 pt-10 lg:hidden">
+        {PROJECTS.slice(0, 6).map((p) => (
+          <button
+            key={p.title}
+            onClick={() => setOpenProject(p)}
+            className="group flex flex-col items-center gap-2 rounded-xl border-2 border-transparent p-2 text-center transition-colors hover:border-lime/30 hover:bg-black/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+          >
+            <img
+              src={p.preview}
+              alt={p.title}
+              className="aspect-video w-full rounded-lg border border-white/20 object-cover"
+            />
+            <span className="text-sm tracking-[-0.03em] text-[#f7f7f7]">{p.title}</span>
+          </button>
+        ))}
+      </div>
 
       {/* Dock */}
-      <div className="absolute bottom-10 left-1/2 z-[4] flex -translate-x-1/2 items-center gap-4 rounded-3xl border border-white/20 bg-white/10 p-3 backdrop-blur-md">
+      <div className="fixed bottom-6 left-1/2 z-[40] flex -translate-x-1/2 items-center gap-3 rounded-3xl border border-white/20 bg-white/10 p-2.5 backdrop-blur-md sm:gap-4 sm:p-3 lg:absolute lg:bottom-10">
         <DockIcon label="About Code@" onClick={() => setWindow('about')}>
           <User size={20} />
         </DockIcon>
         <DockIcon label="Leadership" onClick={() => setWindow('team')}>
           <StickyNote size={20} />
+        </DockIcon>
+        <DockIcon label="Contact" onClick={() => setWindow('contact')}>
+          <Mail size={20} />
         </DockIcon>
         <span className="h-12 w-px rounded-full bg-white/20" aria-hidden />
         <DockIcon label="Instagram" href="https://www.instagram.com/">
@@ -241,6 +275,11 @@ export default function Team() {
                 it with every launch.
               </p>
             </div>
+          </Window>
+        )}
+        {window_ === 'contact' && (
+          <Window title="contact.md — Code@" onClose={() => setWindow(null)}>
+            <ContactForm />
           </Window>
         )}
       </AnimatePresence>

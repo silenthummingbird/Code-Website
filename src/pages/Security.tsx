@@ -1,9 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Layers, ShieldCheck } from 'lucide-react'
 import FadeUp from '@/components/FadeUp'
-import { SERVICES } from '@/lib/data'
-
-const CLIENTS = ['Toyota Iraq', 'Makasib Al-Khair', 'Shift', 'Bay Bank', 'Sarco Industries']
+import { CLIENTS, COMPANY, SERVICES } from '@/lib/data'
 
 const SECURITY_POINTS = SERVICES.filter((s) =>
   ['security', 'cloud', 'erp-crm', 'ai'].includes(s.slug),
@@ -24,6 +22,7 @@ export default function Security() {
   const svgRef = useRef<SVGSVGElement>(null)
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let raf = 0
     let start = performance.now()
     let phase: 'p1' | 'splash' | 'p2' | 'idle' = 'p1'
@@ -108,7 +107,7 @@ export default function Security() {
                 <Layers size={18} className="text-white/80" />
               </div>
 
-              <div className="relative h-px w-[90px] bg-gradient-to-r from-white/15 to-white/[0.07] sm:w-[160px]">
+              <div className="relative h-px w-[40px] bg-gradient-to-r from-white/15 to-white/[0.07] sm:w-[160px]">
                 <svg ref={svgRef} className="absolute inset-x-0 top-1/2 h-4 w-full -translate-y-1/2 overflow-visible">
                   <defs>
                     <linearGradient ref={gradRef} id="beam-gradient" x1="0" y1="0" x2="1" y2="0">
@@ -137,7 +136,7 @@ export default function Security() {
                 </div>
               </div>
 
-              <div className="h-px w-[90px] bg-gradient-to-l from-white/15 to-white/[0.07] sm:w-[160px]" />
+              <div className="h-px w-[40px] bg-gradient-to-l from-white/15 to-white/[0.07] sm:w-[160px]" />
 
               <div
                 ref={rightNode}
@@ -160,14 +159,14 @@ export default function Security() {
               </h1>
             </FadeUp>
             <FadeUp delay={0.2}>
-              <p className="mx-auto mt-6 max-w-[440px] text-sm leading-relaxed text-white/40">
+              <p className="mx-auto mt-6 max-w-[440px] text-sm leading-relaxed text-white/60">
                 Threat modeling, hardening and continuous protection —<br className="hidden sm:block" /> engineered
                 into every product from day one, not bolted on at the end.
               </p>
             </FadeUp>
             <FadeUp delay={0.3}>
               <a
-                href="mailto:hello@codeat.io?subject=Security%20Audit"
+                href={`mailto:${COMPANY.email}?subject=Security%20Audit`}
                 className="mt-9 inline-block rounded-full bg-lime px-8 py-3 text-sm font-semibold text-ink transition-all hover:-translate-y-px hover:brightness-110 active:scale-[0.97]"
               >
                 Request an Audit
@@ -203,7 +202,7 @@ export default function Security() {
               <FadeUp key={s.slug} delay={i * 0.08} className="group bg-ink p-8 transition-colors hover:bg-card">
                 <p className="font-mono text-[10px] tracking-widest text-lime">/{s.num}</p>
                 <h3 className="mt-5 text-lg font-medium text-paper">{s.title}</h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-white/45">{s.desc}</p>
+                <p className="mt-2 text-[13px] leading-relaxed text-white/60">{s.desc}</p>
               </FadeUp>
             ))}
           </div>

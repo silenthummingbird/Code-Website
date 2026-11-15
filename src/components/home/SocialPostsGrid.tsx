@@ -11,7 +11,7 @@ const V = {
   bloom: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260315_073750_51473149-4350-4920-ae24-c8214286f323.mp4',
 }
 
-const CARD = 'relative h-[384px] w-[384px] shrink-0 overflow-hidden rounded-xl'
+const CARD = 'relative aspect-square w-full max-w-[384px] overflow-hidden rounded-xl'
 
 function CardOne() {
   return (
@@ -224,7 +224,7 @@ export default function SocialPostsGrid() {
   return (
     <section
       ref={hostRef}
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-x-auto bg-ink py-24"
+      className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden bg-ink py-24"
       style={{
         backgroundImage: "url('/bg.svg')",
         backgroundSize: 'cover',
@@ -245,7 +245,7 @@ export default function SocialPostsGrid() {
       </div>
 
       {live && (
-        <div className="grid shrink-0 gap-4 px-6" style={{ gridTemplateColumns: 'repeat(auto-fit, 384px)', justifyContent: 'center', maxWidth: 1300 }}>
+        <div className="grid w-full max-w-[1300px] grid-cols-1 justify-items-center gap-4 px-6 sm:grid-cols-2 lg:grid-cols-3">
           <CardOne />
           <CardTwo />
           <CardThree />

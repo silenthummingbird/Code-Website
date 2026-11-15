@@ -109,7 +109,7 @@ export default function Home() {
           <FadeUp delay={1.05}>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <a
-                href="mailto:hello@codeat.io"
+                href={`mailto:${COMPANY.email}`}
                 className="group inline-flex items-center gap-2 rounded-full bg-lime px-7 py-3.5 text-sm font-semibold text-ink transition-all duration-300 hover:brightness-110 active:scale-[0.97]"
               >
                 Start a Project
@@ -168,7 +168,7 @@ export default function Home() {
               <FadeUp key={s.slug} delay={(i % 4) * 0.08} className="group bg-ink p-7 transition-colors duration-300 hover:bg-card lg:p-8">
                 <p className="font-mono text-[10px] tracking-widest text-muted transition-colors group-hover:text-lime">/{s.num}</p>
                 <h3 className="mt-6 text-lg font-medium tracking-tight text-paper">{s.title}</h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-white/45">{s.desc}</p>
+                <p className="mt-2 text-[13px] leading-relaxed text-white/60">{s.desc}</p>
               </FadeUp>
             ))}
           </div>

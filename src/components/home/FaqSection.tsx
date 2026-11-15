@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import * as Accordion from '@radix-ui/react-accordion'
 import { ChevronDown } from 'lucide-react'
-import { FAQS, FAQ_CATEGORIES, type FaqCategory } from '@/lib/data'
+import { COMPANY, FAQS, FAQ_CATEGORIES, type FaqCategory } from '@/lib/data'
 import FadeUp from '@/components/FadeUp'
 import SpotlightBorder from '@/components/SpotlightBorder'
 import { cn } from '@/lib/utils'
@@ -61,7 +61,7 @@ export default function FaqSection() {
               <p className="mt-2 text-sm leading-relaxed text-white/55">
                 Need help with something specific? Our team makes things easy — don&apos;t hesitate to reach out.
               </p>
-              <a href="mailto:hello@codeat.io" className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-lime hover:brightness-110">
+              <a href={`mailto:${COMPANY.email}`} className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-lime hover:brightness-110">
                 Email us <span aria-hidden>→</span>
               </a>
             </SpotlightBorder>

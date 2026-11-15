@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
-import { PROJECTS, STATS, MARQUEE_ROW_1, MARQUEE_ROW_2, type Project } from '@/lib/data'
+import { COMPANY, PROJECTS, STATS, MARQUEE_ROW_1, MARQUEE_ROW_2, type Project } from '@/lib/data'
 import ProjectModal from '@/components/home/ProjectModal'
 import KineticText from '@/components/KineticText'
 import FadeUp from '@/components/FadeUp'
@@ -54,6 +54,7 @@ function Explorations() {
   const rightRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let raf = 0
     const tick = () => {
       const host = hostRef.current
@@ -88,7 +89,7 @@ function Explorations() {
 
       {/* parallax columns */}
       <div className="pointer-events-none absolute inset-0 z-20">
-        <div className="sticky top-0 mx-auto grid h-screen max-w-[1400px] grid-cols-2 items-center gap-12 overflow-hidden px-6 md:gap-40 lg:px-16">
+        <div className="sticky top-0 mx-auto grid h-screen max-w-[1400px] grid-cols-1 items-center gap-12 overflow-hidden px-6 md:grid-cols-2 md:gap-40 lg:px-16">
           <div ref={leftRef} className="flex flex-col items-start gap-10 will-change-transform">
             {leftImgs.map((src, i) => (
               <img key={src} src={src} alt="" loading="lazy" className={`pointer-events-auto aspect-square w-full max-w-[320px] rounded-2xl border border-white/10 object-cover ${i % 2 ? 'rotate-2' : '-rotate-2'}`} />
@@ -167,7 +168,7 @@ export default function Portfolio() {
             Your project, <em className="font-serif font-[350] text-lime">next</em>.
           </h2>
           <a
-            href="mailto:hello@codeat.io?subject=New%20Project"
+            href={`mailto:${COMPANY.email}?subject=New%20Project`}
             className="group mt-8 inline-flex items-center gap-2 rounded-full bg-lime px-8 py-3.5 text-sm font-semibold text-ink transition-all hover:brightness-110 active:scale-[0.97]"
           >
             Start a Project

@@ -1,10 +1,17 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Plus, Zap, MoreHorizontal, BarChart2, Video, VideoOff, Mic, MicOff, Search, Play, X } from 'lucide-react'
+import { imgFallback, AVATAR_FALLBACK } from '@/lib/utils'
 
 const VIDEO_LIGHT = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260514_103318_2aa26b55-df1a-43a6-903d-941e718c9366.mp4'
 const VIDEO_DARK = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260514_102933_4e8f73b5-775a-4179-b2fb-472f59063dcd.mp4'
 
 const av = (u: string) => `https://i.pravatar.cc/100?u=${u}`
+const avErr = imgFallback(AVATAR_FALLBACK)
+
+/** Avatar image with a built-in graceful fallback when pravatar is unreachable. */
+function Av({ u, ...rest }: React.ImgHTMLAttributes<HTMLImageElement> & { u: string }) {
+  return <img src={av(u)} onError={avErr} {...rest} />
+}
 const BLUE_BARS = [35, 45, 30, 55, 40, 65, 50, 75, 60, 85, 70, 80, 65, 55, 45, 70, 60, 75, 55, 65, 50, 75, 60, 55]
 const GREY_BARS = [45, 70, 60, 75, 55, 65, 50, 75, 60, 85, 70, 55, 45, 70, 60, 75, 55, 65, 50, 75, 60, 55, 45, 70, 60, 75, 55, 65, 50, 75, 60, 55, 45, 70, 60, 75]
 
@@ -12,7 +19,7 @@ function Avatars({ users, count, dark }: { users: string[]; count: string; dark:
   return (
     <div className="flex items-center">
       {users.map((u, i) => (
-        <img key={u} src={av(u)} alt="" className="size-8 rounded-full border-2 border-white/40 object-cover" style={{ marginLeft: i ? -12 : 0 }} />
+        <Av key={u} u={u} alt="" className="size-8 rounded-full border-2 border-white/40 object-cover" style={{ marginLeft: i ? -12 : 0 }} />
       ))}
       <span className={`ml-2 flex size-[38px] items-center justify-center rounded-full text-xs font-medium ${dark ? 'bg-white/10 text-white' : 'bg-black/[0.08] text-black'}`}>{count}</span>
     </div>
@@ -90,7 +97,7 @@ export default function ErpDashboard() {
         <div className="flex h-full flex-col px-10 py-8">
           {/* Top nav */}
           <div className="mb-8 grid items-center gap-4" style={{ gridTemplateColumns: 'auto auto 1fr auto auto' }}>
-            <img src={av('current_user')} alt="You" className="size-12 rounded-full object-cover ring-2 ring-white/40" />
+            <Av u="current_user" alt="You" className="size-12 rounded-full object-cover ring-2 ring-white/40" />
 
             <div className="flex items-center gap-2 rounded-full p-1" style={{ background: pill, backdropFilter: 'blur(8px)' }}>
               {/* mode switch */}
@@ -111,7 +118,7 @@ export default function ErpDashboard() {
             <div className="flex justify-center">
               {alertOpen && (
                 <div className="flex items-center gap-3 rounded-full bg-white py-1.5 pl-4 pr-1.5" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-                  <img src={av('meeting_host')} alt="" className="size-8 rounded-full object-cover" />
+                  <Av u="meeting_host" alt="" className="size-8 rounded-full object-cover" />
                   <span className="text-sm text-black">Meeting is about to start</span>
                   <span className="rounded-full px-2.5 py-1 text-xs text-black" style={{ background: '#f0f0f0' }}>-5:23</span>
                   <button onClick={() => setAlertOpen(false)} aria-label="Dismiss" className="relative flex size-8 items-center justify-center">
@@ -164,14 +171,14 @@ export default function ErpDashboard() {
                 {GREY_BARS.map((h, i) => <span key={`g${i}`} className="flex-1 rounded-sm" style={{ height: `${h}%`, background: dark ? '#333' : '#e5e7eb' }} />)}
               </div>
               <div className="mb-2 mt-2 flex justify-between px-5">
-                <img src={av('m1')} alt="" className="size-[18px] rounded-full border border-white" />
+                <Av u="m1" alt="" className="size-[18px] rounded-full border border-white" />
                 <span className="flex">
-                  <img src={av('m2')} alt="" className="-mr-2 size-[18px] rounded-full border border-white" />
-                  <img src={av('m3')} alt="" className="size-[18px] rounded-full border border-white" />
+                  <Av u="m2" alt="" className="-mr-2 size-[18px] rounded-full border border-white" />
+                  <Av u="m3" alt="" className="size-[18px] rounded-full border border-white" />
                 </span>
                 <span className="flex">
-                  <img src={av('m4')} alt="" className="-mr-2 size-[18px] rounded-full border border-white" />
-                  <img src={av('m5')} alt="" className="size-[18px] rounded-full border border-white" />
+                  <Av u="m4" alt="" className="-mr-2 size-[18px] rounded-full border border-white" />
+                  <Av u="m5" alt="" className="size-[18px] rounded-full border border-white" />
                 </span>
               </div>
               <div className="mt-auto flex items-center justify-between">
@@ -224,7 +231,7 @@ export default function ErpDashboard() {
                   <div key={n} className="relative h-[100px] w-[160px] shrink-0 overflow-hidden rounded-2xl bg-cover bg-center" style={{ backgroundImage: `url(https://picsum.photos/seed/screen${n}/300/200)` }}>
                     {n === 2 && (
                       <span className="absolute bottom-2 right-2 flex items-center gap-1">
-                        <img src={av('alice_av')} alt="" className="size-6 rounded-full border border-white" />
+                        <Av u="alice_av" alt="" className="size-6 rounded-full border border-white" />
                         <span className="rounded-full px-2 py-0.5 text-[0.65rem] text-white" style={{ background: '#e05e36' }}>Alice</span>
                       </span>
                     )}
@@ -246,21 +253,21 @@ export default function ErpDashboard() {
         {/* bottom participant bar */}
         <div className="erp-glass absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-3 rounded-full px-4 py-2.5">
           <span className="relative">
-            <img src={av('speaker')} alt="Active speaker" className="size-11 rounded-full object-cover" />
+            <Av u="speaker" alt="Active speaker" className="size-11 rounded-full object-cover" />
             <VoiceDot />
           </span>
-          <img src={av('p1')} alt="" className="size-10 rounded-full object-cover opacity-70" />
+          <Av u="p1" alt="" className="size-10 rounded-full object-cover opacity-70" />
           <span className="relative">
-            <img src={av('p2')} alt="" className="size-10 rounded-full object-cover" />
+            <Av u="p2" alt="" className="size-10 rounded-full object-cover" />
             <VoiceDot />
           </span>
-          <img src={av('p3')} alt="" className="size-10 rounded-full object-cover" />
+          <Av u="p3" alt="" className="size-10 rounded-full object-cover" />
           <span className="flex size-10 items-center justify-center rounded-full text-sm font-bold text-white" style={{ background: 'rgba(255,255,255,0.25)' }}>+17</span>
         </div>
 
         {/* components button */}
         <div className="absolute bottom-6 left-8 grid grid-cols-2 gap-1 rounded-[14px] p-1.5" style={{ background: pill, backdropFilter: 'blur(8px)' }}>
-          {['c1', 'c2', 'c3', 'c4'].map((u) => <img key={u} src={av(u)} alt="" className="size-4 rounded-full object-cover" />)}
+          {['c1', 'c2', 'c3', 'c4'].map((u) => <Av key={u} u={u} alt="" className="size-4 rounded-full object-cover" />)}
         </div>
 
         {/* floating controls */}
